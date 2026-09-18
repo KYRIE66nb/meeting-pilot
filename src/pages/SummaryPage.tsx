@@ -65,7 +65,7 @@ export default function SummaryPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-6 space-y-4">
       <div className="flex flex-wrap items-center gap-3">
-        <h1 className="text-lg font-bold text-slate-800">会议总结：{m.title}</h1>
+        <h1 className="text-xl font-extrabold tracking-tight text-slate-800">会议总结：{m.title}</h1>
         <span className="chip bg-brand-100 text-brand-700">已正式结束</span>
         <div className="ml-auto flex gap-2">
           <button className="btn-ghost" onClick={() => createFromTemplate(m.templateId)}>

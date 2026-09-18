@@ -21,10 +21,10 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-40">
+      <header className="bg-white/90 backdrop-blur border-b border-slate-200 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 h-14 flex items-center gap-4">
-          <button className="flex items-center gap-2 font-bold text-slate-800" onClick={() => go('home')}>
-            <span className="w-7 h-7 rounded-lg bg-brand-600 text-white grid place-items-center text-sm">✓</span>
+          <button className="flex items-center gap-2 font-bold text-slate-800 hover:opacity-80 transition-opacity" onClick={() => go('home')}>
+            <span className="w-7 h-7 rounded-lg bg-brand-600 text-white grid place-items-center text-sm shadow-sm">✓</span>
             MeetingPilot<span className="hidden sm:inline text-slate-400 font-normal">有效会议助手</span>
           </button>
           {meeting && view !== 'home' && (
@@ -46,7 +46,7 @@ export default function App() {
             </>
           )}
           {!meeting || view === 'home' ? (
-            <span className="ml-auto text-xs text-slate-400 hidden sm:block">
+            <span className="ml-auto text-xs text-slate-500 hidden sm:block">
               会前定目标 · 会中查覆盖 · 结束前查缺口 · 会后出总结
             </span>
           ) : null}

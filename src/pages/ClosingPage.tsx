@@ -128,27 +128,31 @@ export default function ClosingPage() {
         className={`card p-5 border-l-4 ${canEnd ? 'border-l-emerald-500' : 'border-l-rose-500'}`}
       >
         {canEnd ? (
-          <>
-            <h2 className="font-bold text-emerald-700 text-base">
-              ✅ 没有阻塞会议结束的问题，可以正式结束
-            </h2>
-            <p className="text-sm text-slate-500 mt-1">
-              {blocking.length === 0 && followup.length === 0
-                ? '所有必须完成的目标项均已覆盖。'
-                : `剩余 ${followup.length} 项可会后跟进的问题（不阻塞散会），将写入总结的“未解决问题”。`}
-            </p>
-          </>
+          <div className="flex items-start gap-3">
+            <span className="w-9 h-9 rounded-full bg-emerald-100 text-emerald-600 grid place-items-center text-lg shrink-0" aria-hidden>✓</span>
+            <div className="flex-1">
+              <h2 className="font-bold text-emerald-700 text-base">没有阻塞会议结束的问题，可以正式结束</h2>
+              <p className="text-sm text-slate-500 mt-1">
+                {blocking.length === 0 && followup.length === 0
+                  ? '所有必须完成的目标项均已覆盖。'
+                  : `剩余 ${followup.length} 项可会后跟进的问题（不阻塞散会），将写入总结的“未解决问题”。`}
+              </p>
+            </div>
+          </div>
         ) : (
-          <>
-            <h2 className="font-bold text-rose-700 text-base">
-              ⛔ 还有 {blocking.length} 项阻塞会议结束的问题
-              {followup.length > 0 && <span className="text-amber-600 text-sm font-medium">，另有 {followup.length} 项可会后跟进</span>}
-            </h2>
-            <p className="text-sm text-slate-500 mt-1">
-              为了达成本次会议目标：必须讨论的议题、必须发言的人、关键决策、行动项负责人/截止时间、阻塞性问题中仍有未闭环项。
-              可返回讨论、现在拍板、将缺口转为行动项，或记录例外原因后跳过。
-            </p>
-          </>
+          <div className="flex items-start gap-3">
+            <span className="w-9 h-9 rounded-full bg-rose-100 text-rose-600 grid place-items-center text-base font-bold shrink-0" aria-hidden>!</span>
+            <div className="flex-1">
+              <h2 className="font-bold text-rose-700 text-base">
+                还有 <span className="text-2xl tabular-nums align-middle mx-0.5">{blocking.length}</span> 项阻塞会议结束的问题
+                {followup.length > 0 && <span className="text-amber-600 text-sm font-medium">，另有 {followup.length} 项可会后跟进</span>}
+              </h2>
+              <p className="text-sm text-slate-500 mt-1">
+                为了达成本次会议目标：必须讨论的议题、必须发言的人、关键决策、行动项负责人/截止时间、阻塞性问题中仍有未闭环项。
+                可返回讨论、现在拍板、将缺口转为行动项，或记录例外原因后跳过；全部阻塞项处理完即可正式结束。
+              </p>
+            </div>
+          </div>
         )}
         <div className="flex gap-2 mt-3">
           <button className="btn-ghost" onClick={() => go('live', m.id)}>

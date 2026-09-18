@@ -23,14 +23,18 @@ export function Modal({
 }) {
   if (!open) return null
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-[2px] p-4" onClick={onClose}>
       <div
-        className="card w-full max-w-lg p-5 max-h-[85vh] overflow-y-auto"
+        className="card w-full max-w-lg p-5 max-h-[85vh] overflow-y-auto shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-semibold text-slate-800">{title}</h3>
-          <button className="text-slate-400 hover:text-slate-600 text-xl leading-none" onClick={onClose}>
+          <button
+            className="text-slate-400 hover:text-slate-600 text-xl leading-none cursor-pointer transition-colors"
+            aria-label="关闭弹窗"
+            onClick={onClose}
+          >
             ×
           </button>
         </div>
@@ -50,14 +54,32 @@ export function PriorityTag({ p }: { p: 'must' | 'should' | 'note' }) {
   return <span className={cls}>{label}</span>
 }
 
-export function StatusIcon({ status }: { status: 'ok' | 'part' | 'miss' }) {
+export function StatusIcon({ status, size = 'md' }: { status: 'ok' | 'part' | 'miss'; size?: 'sm' | 'md' }) {
   const map = {
-    ok: 'text-emerald-600',
-    part: 'text-amber-500',
-    miss: 'text-rose-500',
+    ok: { bg: 'bg-emerald-100', text: 'text-emerald-700', icon: '✓', label: '已覆盖' },
+    part: { bg: 'bg-amber-100', text: 'text-amber-700', icon: '◐', label: '部分覆盖 / 讨论未决' },
+    miss: { bg: 'bg-rose-100', text: 'text-rose-600', icon: '✕', label: '未覆盖' },
   } as const
-  const icon = status === 'ok' ? '✓' : status === 'part' ? '◐' : '✗'
-  return <span className={`${map[status]} font-bold select-none`} title={status === 'ok' ? '已覆盖' : status === 'part' ? '部分覆盖/讨论未决' : '未覆盖'}>{icon}</span>
+  const m = map[status]
+  const box = size === 'sm' ? 'w-4 h-4 text-[10px]' : 'w-5 h-5 text-xs'
+  return (
+    <span
+      className={`${box} ${m.bg} ${m.text} rounded-full grid place-items-center font-bold shrink-0 select-none leading-none`}
+      title={m.label}
+    >
+      {m.icon}
+    </span>
+  )
+}
+
+/** 发言人彩色圆点（与 SpeakerChip 同一色系） */
+export const SPEAKER_DOT_COLORS = [
+  '#6366f1', '#10b981', '#f59e0b', '#0ea5e9', '#f43f5e', '#8b5cf6', '#14b8a6', '#84cc16',
+]
+
+export function speakerDot(meeting: Meeting, id: string) {
+  const i = Math.max(0, meeting.participants.findIndex((p) => p.id === id))
+  return SPEAKER_DOT_COLORS[i % SPEAKER_DOT_COLORS.length]
 }
 
 export function SectionTitle({ children, right }: { children: React.ReactNode; right?: React.ReactNode }) {
@@ -213,7 +235,7 @@ export function GoalItemRow({
 }) {
   return (
     <div
-      className={`flex items-start gap-2 rounded-lg px-2 py-1.5 text-sm ${
+      className={`flex items-start gap-2 rounded-lg px-2 py-1.5 text-sm transition-colors duration-150 ${
         focused ? 'ring-2 ring-brand-500 bg-brand-50' : 'hover:bg-slate-50'
       }`}
       id={`goal-${item.id}`}

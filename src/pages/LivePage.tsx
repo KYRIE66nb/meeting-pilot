@@ -11,6 +11,7 @@ import {
   RiskRow,
   SectionTitle,
   StatusIcon,
+  speakerDot,
   speakerName,
 } from '../components/ui'
 import { ActionModal, DecisionModal, RiskModal } from '../components/modals'
@@ -118,21 +119,26 @@ export default function LivePage() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-4 space-y-3">
       {/* 顶部：目标条 */}
-      <div className="card p-4">
-        <div className="flex flex-wrap items-center gap-3">
-          <h1 className="font-bold text-slate-800">{m.title}</h1>
-          <span className="chip bg-slate-100 text-slate-500">
-            进行至 {fmtClock(clock)} / 计划 {fmtClock(m.plannedMinutes * 60)}
-          </span>
-          <span className="chip bg-slate-100 text-slate-500">讨论记录 {m.transcript.length} 条</span>
-          <button className="btn-primary ml-auto" onClick={() => go('closing', m.id)}>
-            准备结束会议 →
-          </button>
+      <div className="card overflow-hidden">
+        <div className="p-4">
+          <div className="flex flex-wrap items-center gap-2.5">
+            <h1 className="font-bold text-slate-800 text-base">{m.title}</h1>
+            <span className="chip bg-slate-100 text-slate-600 tabular-nums">
+              进行至 {fmtClock(clock)} / 计划 {fmtClock(m.plannedMinutes * 60)}
+            </span>
+            <span className="chip bg-slate-100 text-slate-600">讨论记录 {m.transcript.length} 条</span>
+            <button className="btn-primary ml-auto" onClick={() => go('closing', m.id)}>
+              准备结束会议 →
+            </button>
+          </div>
         </div>
-        <div className="mt-2 text-sm text-slate-600 flex items-start gap-2">
-          <span className="shrink-0 font-semibold text-brand-700">本会目标：</span>
-          <span>
-            {m.goal.keyGoal.text || '（未填写）'} <PriorityTag p={m.goal.keyGoal.priority} />
+        <div className="bg-brand-50 border-t border-brand-100 px-4 py-2.5 text-sm text-slate-700 flex items-start gap-2">
+          <span className="shrink-0" aria-hidden>🎯</span>
+          <span className="flex items-start gap-1.5">
+            <span className="font-semibold text-brand-700 shrink-0">本会目标：</span>
+            <span>
+              {m.goal.keyGoal.text || '（未填写）'} <PriorityTag p={m.goal.keyGoal.priority} />
+            </span>
           </span>
         </div>
       </div>
@@ -248,10 +254,18 @@ export default function LivePage() {
                 </p>
               )}
               {m.transcript.map((e) => (
-                <div key={e.id} className="flex gap-2 text-sm rounded px-1 py-1 hover:bg-slate-50">
+                <div key={e.id} className="flex gap-2 text-sm rounded-lg px-1 py-1 hover:bg-slate-50 transition-colors">
                   <span className="text-xs text-slate-400 w-10 shrink-0 tabular-nums pt-0.5">{fmtClock(e.t)}</span>
-                  <span className="text-slate-500 w-24 shrink-0 truncate pt-0.5" title={speakerName(m, e.speakerId)}>
-                    {speakerName(m, e.speakerId)}
+                  <span
+                    className="w-24 shrink-0 truncate pt-0.5 flex items-center gap-1.5"
+                    title={speakerName(m, e.speakerId)}
+                  >
+                    <span
+                      className="inline-block w-2 h-2 rounded-full shrink-0"
+                      style={{ background: speakerDot(m, e.speakerId) }}
+                      aria-hidden
+                    />
+                    <span className="truncate">{speakerName(m, e.speakerId)}</span>
                   </span>
                   <span className="flex-1 text-slate-700">{e.text}</span>
                 </div>
@@ -328,9 +342,9 @@ export default function LivePage() {
                     }`}
                   >
                     <div className="flex items-center gap-2 text-sm">
-                      <span className="text-xs text-slate-400">{idx + 1}</span>
+                      <span className="text-xs text-slate-400 w-4 text-center shrink-0">{idx + 1}</span>
                       <span className="font-medium text-slate-700 flex-1 truncate">{s.window.segment.title}</span>
-                      <StatusIcon status={s.discussed ? 'ok' : 'miss'} />
+                      <StatusIcon status={s.discussed ? 'ok' : 'miss'} size="sm" />
                     </div>
                     <div className="flex items-center gap-2 mt-1 text-[11px] text-slate-400">
                       <span className="tabular-nums">

@@ -1,4 +1,3 @@
-import { DEMO_SCRIPTS } from '../data/demoScripts'
 import { TEMPLATES } from '../data/templates'
 import { useAppStore } from '../store'
 import type { Meeting } from '../types'
@@ -28,35 +27,35 @@ export default function HomePage() {
     <div className="max-w-7xl mx-auto px-4 py-8 space-y-10">
       {/* Hero */}
       <section className="card p-8 relative overflow-hidden">
-        <div className="absolute right-0 top-0 w-64 h-64 bg-brand-50 rounded-full -mr-24 -mt-24 pointer-events-none" />
+        <div className="absolute right-0 top-0 w-80 h-80 bg-brand-50 rounded-full -mr-28 -mt-28 pointer-events-none" />
+        <div className="absolute right-16 bottom-0 w-40 h-40 bg-brand-50/70 rounded-full -mb-20 pointer-events-none" />
         <div className="relative">
-          <h1 className="text-2xl font-bold text-slate-800">
-            开会前先回答：<em className="text-brand-600 not-italic">这场会必须达成什么？</em>
+          <span className="chip bg-brand-100 text-brand-700 mb-3">笔试题 3 · 有效会议助手 · Mock 数据演示</span>
+          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-800">
+            开会前先回答：<span className="text-brand-600">这场会必须达成什么？</span>
           </h1>
-          <p className="mt-2 text-slate-500 max-w-3xl text-sm leading-6">
+          <p className="mt-2.5 text-slate-500 max-w-3xl text-sm leading-6">
             现有会议工具只解决“记录了什么”。MeetingPilot 把会议目标结构化（Key Goal / Conclusions / Decisions /
             Action Items），会中实时检查覆盖情况，并在<span className="font-semibold text-slate-700">会议结束前</span>
             回答：为了达成本次会议目标，还有什么没有讨论、没有确认、没有决定？
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
-            {DEMOS.map((d) => {
-              const script = DEMO_SCRIPTS.find((s) => s.id === d.id)!
-              return (
-                <button
-                  key={d.id}
-                  onClick={() => createFromDemo(d.id)}
-                  className="group text-left rounded-xl border-2 border-brand-200 bg-brand-50/60 hover:border-brand-500 hover:bg-brand-50 px-5 py-4 transition-colors"
-                >
-                  <div className="font-semibold text-brand-700">{d.cta}</div>
-                  <div className="text-xs text-slate-500 mt-1 w-64">{script.title}</div>
-                  <div className="text-xs text-brand-600 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    点击直接进入会中，可播放或一键载入模拟讨论 →
-                  </div>
-                </button>
-              )
-            })}
+            <button
+              onClick={() => createFromDemo('demo-launch')}
+              className="group text-left rounded-xl bg-brand-600 text-white px-5 py-4 shadow-sm hover:bg-brand-700 hover:shadow-card-hover transition-all duration-200 cursor-pointer"
+            >
+              <div className="font-semibold">▶ 一键演示：6 分钟产品上线决策会</div>
+              <div className="text-xs text-brand-100 mt-1">模拟转写 · 预埋缺口 · 约 30 秒跑完覆盖检查全流程</div>
+            </button>
+            <button
+              onClick={() => createFromDemo('demo-customer')}
+              className="group text-left rounded-xl border-2 border-brand-300 bg-white px-5 py-4 hover:border-brand-500 hover:bg-brand-50/50 transition-all duration-200 cursor-pointer"
+            >
+              <div className="font-semibold text-brand-700">▶ 一键演示：5 分钟客户推进会</div>
+              <div className="text-xs text-slate-500 mt-1">发言人顺序议程 · 另一种缺口画像</div>
+            </button>
           </div>
-          <p className="mt-3 text-xs text-slate-400">
+          <p className="mt-3 text-xs text-slate-500">
             评审者 30 秒路径：点上面任一演示 → 「一键载入全部」→「准备结束会议」→ 逐项处理缺口 → 正式结束看总结。
           </p>
         </div>
@@ -70,7 +69,7 @@ export default function HomePage() {
             <button
               key={t.id}
               onClick={() => createFromTemplate(t.id)}
-              className="card p-4 text-left hover:ring-2 hover:ring-brand-400 transition-shadow flex flex-col"
+              className="card card-clickable p-4 text-left flex flex-col"
             >
               <div className="font-semibold text-slate-800">{t.name}</div>
               <div className="text-xs text-slate-500 mt-2 flex-1 leading-5">{t.description}</div>
@@ -168,7 +167,3 @@ export default function HomePage() {
   )
 }
 
-const DEMOS = [
-  { id: 'demo-launch', cta: '▶ 一键演示：6 分钟产品上线决策会' },
-  { id: 'demo-customer', cta: '▶ 一键演示：5 分钟客户推进会' },
-]
